@@ -3,45 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Oxford</title>
+    <title>Oxford Transition Support</title>
     <link rel="stylesheet" href="coba2.css">
 </head>
 <body>
     <header>
-        <h1>About Oxford</h1>
+        <img src="logo.png" alt="Oxford Logo">
+        <h1>UNIVERSITY OF OXFORD</h1>
         <nav>
             <ul>
-                <li><a href="index.html">Overview</a></li>
+                <li><a href="overview.html">Overview</a></li>
                 <li><a href="about.html">About Oxford</a></li>
                 <li><a href="resources.html">Resources</a></li>
+                <li><a href="news.html">News</a></li> 
                 <li><a href="contact.html">Contact Us</a></li>
             </ul>
         </nav>
     </header>
+    
     <main>
-        <img src="student.jpg">
-        <section>
-            <h2>Oxford Student</h2>
-        
-            <p>Murid di Universitas Oxford datang dari berbagai latar belakang, budaya, dan negara. Dengan komunitas internasional yang besar, mereka menciptakan lingkungan belajar yang kaya dan beragam. Berikut adalah beberapa aspek menarik tentang mahasiswa di Oxford:</p>
-            <h3>1 keberagaman.</h3>
-            <p> Mahasiswa Oxford berasal dari lebih dari 150 negara, dengan berbagai disiplin ilmu. Hal ini menciptakan suasana multicultural yang memungkinkan pertukaran ide dan perspektif yang berharga.</p>
-            <h3>2 kehidupan akademik</h3>
-            <p>Mahasiswa di Oxford terlibat dalam program yang intensif dan terstruktur, biasanya dalam format tutorial. Dalam sistem ini, mahasiswa bekerja dalam kelompok kecil dengan dosen, memungkinkan perhatian individu yang lebih dalam dan diskusi mendalam tentang topik yang dipelajari.</p>
-            <h3>3 kegiatan ekstrakurikuler</h3>
-            <p>Selain fokus pada akademik, mahasiswa di Oxford memiliki banyak kesempatan untuk terlibat dalam kegiatan ekstrakurikuler. Terdapat lebih dari 400 klub dan organisasi yang mencakup seni, olahraga, debat, dan kegiatan sosial. Ini membantu mahasiswa untuk mengembangkan keterampilan kepemimpinan dan membangun persahabatan.</p>
-            <h3>4 dukungan akademik</h3>
-            <p>Oxford menawarkan berbagai sumber daya dan dukungan bagi mahasiswa, termasuk bimbingan akademik, perpustakaan yang luas, dan fasilitas penelitian. Mahasiswa juga dapat mengakses layanan kesehatan mental dan dukungan karier.</p>
-            <h3>5 pengalaman sosial dan budaya</h3>
-            <p>Kehidupan sosial di Oxford sangat dinamis, dengan banyak acara, festival, dan kegiatan budaya. Mahasiswa sering terlibat dalam perayaan tradisional, konser, pameran seni, dan pertunjukan teater.</p>
+        <section id="hero">
+            <div id="image-slider">
+                <div class="slider">
+                    <div class="slides">
+                        <div class="slide active">
+                            <img src="oxford.webp" alt="Image 1">
+                        </div>
+                        <div class="slide">
+                            <img src="perpustakaan.jpg" alt="Image 2">
+                        </div>
+                        <div class="slide">
+                            <img src="jalan.avif" alt="Image 3">
+                        </div>
+                    </div>
+                    <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+                    <button class="next" onclick="changeSlide(1)">&#10095;</button>
+                </div>
+            </div>
         </section>
-        <section id="back-section">
-            <button id="back-button" onclick="window.history.back();">Kembali ke Halaman Sebelumnya</button>
+
+        <section id="search">
+            <form onsubmit="return searchSite()" method="get">
+                <input type="text" id="searchQuery" placeholder="Search..." aria-label="Search">
+                <button type="submit">Search</button>
+            </form>
+            <ul id="searchResults"></ul>
         </section>
-        
+
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>Welcome to Oxford! This guide provides essential information for new students.</p>
+        </section>
     </main>
+
     <footer>
         <p>&copy; 2024 Oxford University. All rights reserved.</p>
     </footer>
+
+    <script>
+        const siteData = [
+            { title: "Overview", content: "Welcome to Oxford! This guide provides essential information for new students.", url: "index.html" },
+            { title: "About Oxford", content: "Universitas Oxford adalah salah satu universitas tertua di dunia.", url: "about.html" },
+            { title: "Resources", content: "Find mental health support, academic resources, and student services.", url: "resources.html" },
+            { title: "News", content: "Latest news and updates from Oxford University.", url: "news.html" },
+            { title: "Contact Us", content: "Feel free to email us for support.", url: "contact.html" }
+        ];
+
+        function searchSite() {
+            const query = document.getElementById('searchQuery').value.toLowerCase();
+            const results = document.getElementById('searchResults');
+            results.innerHTML = ''; 
+
+            const filteredData = siteData.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.content.toLowerCase().includes(query)
+            );
+
+            if (filteredData.length > 0) {
+                filteredData.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${item.url}">${item.title}</a> - ${item.content}`;
+                    results.appendChild(li);
+                });
+            } else {
+                results.innerHTML = '<li>No results found</li>';
+            }
+
+            return false;
+        }
+
+        let currentSlide = 0;
+
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.slide');
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+
+          
+            const slidesContainer = document.querySelector('.slides');
+            slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+       
+        setInterval(() => changeSlide(1), 5000);
+    </script>
 </body>
 </html>
